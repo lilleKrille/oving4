@@ -26,9 +26,12 @@ def k(x,y):
     elif a > 0: print("trenden er positiv")
     else:       print("ingen trend")
 
+#brukar funksjonen antallElementerStorreEllerLik() til å finna dagar med ein gitt temperatur
 def i(temperaturliste):
     typeDager = [0,0,0]
-    print(f"sommerdager: {list[0]} høysommerdager: {list[1]} tropedager: {list[2]}")
+    for i in range(20, 31, 5):
+        typeDager[i%4] = antallElementerStorreEllerLik(temperaturliste, i)
+    print(f"sommerdager: {typeDager[0]} høysommerdager: {typeDager[1]} tropedager: {typeDager[2]}")
 
 #Listene som ble oppgitt i oppgaven
 temperaturer = [-5, 2, 6, 13, 9, 22, 28, 19, 24, 12, 5, 1, -3, -8, 2, 8, 15, 18, 21, 26, 21, 31, 15, 4, 1, -2]
@@ -70,5 +73,4 @@ temperaturer_tidspunkter = list()
 for index in range(len(temperaturer)):
     temperaturer_tidspunkter.append(index)
     
-for i in range(20,5,30):
-    print(i)
+i(temperaturer)
