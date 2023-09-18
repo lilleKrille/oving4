@@ -4,6 +4,41 @@ dogn_nedbor = [2, 5, 0, 0, 0, 3, 6, 4, 0, 0, 5, 0, 12, 12, 12, 12, 7, 19]
 testListeFlyttall = [-16.5, 14.9, -11.5, 18.4, 7.0, -4.3, 0.5, 1.2, 1.4, -1.1, 
                      -12.4, 19.0, 7.6, -3.9, 9.4, 0.1, 9.2, -3.5, 10.1, 7.5]
 
+# g(x,y)
+# reiknar ut kva trenden i eit datasett er. 
+# Parameter: List X, Y
+# kommentert ut kode som eg ikkje ser at me har bruk for
+def g(x,y):
+    teller, nevner = 0, 0
+    snittX = snitt(x)
+    snittY = snitt(y)
+    for i in range(len(x)):
+        teller += (x[i]-snittX)*(y[i]-snittY)
+        nevner += (x[i]-snittX)**2
+    a = teller/nevner
+#    b = snittY - a*snittX
+    return a#, b
+
+#reiknar snittet til ei liste
+def snitt(liste):
+    snitt = 0
+    for item in liste:
+        snitt += item
+    return snitt/len(liste)
+
+def k(x,y):
+    a = g(x,y)
+    if a < 0:   print("trenden er negativ")
+    elif a > 0: print("trenden er positiv")
+    else:       print("ingen trend")
+
+#brukar funksjonen antallElementerStorreEllerLik() til å finna dagar med ein gitt temperatur
+def i(temperaturliste):
+    typeDager = [0,0,0]
+    for i in range(20, 31, 5):
+        typeDager[i%4] = antallElementerStorreEllerLik(temperaturliste, i)
+    print(f"sommerdager: {typeDager[0]} høysommerdager: {typeDager[1]} tropedager: {typeDager[2]}")
+
 #Funksjon som tar inn ei liste med flyttall og en verdi. Funksjonen skal telle antall elementer i lista
 #som er større eller lik verdien som er oppgitt og deretter returnere antallet
 def antallElementerStorreEllerLik(aListe, aVerdi):
@@ -30,3 +65,9 @@ def lengdeLengsteSekvens(aListe, aVerdi = 0):
 
 #Oppgave m) Bruk funksjonen fra oppgave f) på den oppgitte lista «døgn-nedbør» for å finne den lengste perioden uten nedbør
 print(f"Den lengste perioden uten nedbør varte i {lengdeLengsteSekvens(dogn_nedbor)} dager")
+
+temperaturer_tidspunkter = list()
+for index in range(len(temperaturer)):
+    temperaturer_tidspunkter.append(index)
+    
+i(temperaturer)
