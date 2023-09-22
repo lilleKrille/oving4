@@ -1,10 +1,5 @@
-"""
-h) Anta du har en plante som krever at temperaturen er +5 grader celsius for å vokse i det hele
-tatt, og så vokser fortere desto varmere det er, lineært med temperatur over 5 grader. Skriv
-en funksjon som regner ut summen av alle tall over 5 i lista. Så i lista [4, 7, 15] blir summen 0
-(for 4) + 2 (for 7) + 10 (for 15)
-"""
-def sum_over_5 (liste_grader):
+
+def sum_over_5 (liste_grader): #Funksjon som finner ut om temperaturene i listen er over 5 for så legge verdi over 5 i sum.
     sum = 0
     for temp in liste_grader:
         if temp > 5:
