@@ -1,4 +1,5 @@
 #Listene som ble oppgitt i oppgaven
+liste_grader = [4,5,7,10,15]
 temperaturer = [-5, 2, 6, 13, 9, 22, 28, 19, 24, 12, 5, 1, -3, -8, 2, 8, 15, 18, 21, 26, 21, 31, 15, 4, 1, -2]
 dogn_nedbor = [2, 5, 0, 0, 0, 3, 6, 4, 0, 0, 5, 0, 12, 12, 12, 12, 7, 19]
 testListeFlyttall = [-16.5, 14.9, -11.5, 18.4, 7.0, -4.3, 0.5, 1.2, 1.4, -1.1, 
@@ -62,6 +63,27 @@ def lengdeLengsteSekvens(aListe, aVerdi = 0):
         else:
             sekvens = 0
     return lengsteSekvens
+  
+def sum_over_5 (liste_grader): #Funksjon som finner ut om temperaturene i listen er over 5 for så legge verdi over 5 i sum.
+    sum = 0
+    for temp in liste_grader:
+        if temp > 5:
+            sum += temp - 5
+        elif temp < 0: #tar skade ved nagive grader
+            sum += temp     
+    return sum
+  
+def sum_over_5 (liste_grader): #Funksjon som finner ut om temperaturene i listen er over 5 for så legge verdi over 5 i sum.
+    sum = 0
+    for temp in liste_grader:
+        if temp > 5:
+            sum += temp - 5
+    return sum
+
+
+
+Resultat_over_5 = sum_over_5(liste_grader)
+print(Resultat_over_5)
 
 #Oppgave m) Bruk funksjonen fra oppgave f) på den oppgitte lista «døgn-nedbør» for å finne den lengste perioden uten nedbør
 print(f"Den lengste perioden uten nedbør varte i {lengdeLengsteSekvens(dogn_nedbor)} dager")
@@ -71,3 +93,7 @@ for index in range(len(temperaturer)):
     temperaturer_tidspunkter.append(index)
     
 i(temperaturer)
+
+liste_grader = temperaturer
+Resultat_over_5 = sum_over_5(liste_grader)
+print("Dersom vekst er gitt i cm tilsvarere dette: ", Resultat_over_5,"cm")
