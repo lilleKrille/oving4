@@ -85,6 +85,23 @@ def sum_over_5 (liste_grader): #Funksjon som finner ut om temperaturene i listen
 Resultat_over_5 = sum_over_5(liste_grader)
 print(Resultat_over_5)
 
+# e)
+def beregne_differanser(liste):
+    differanser = []
+    for i in range(1,len(liste)):
+        diff = liste[i]-liste[i-1]
+        differanser.append(diff)
+    return differanser
+
+#j)
+for index in range(len(diffs)):
+    if diffs[index] > 0:
+        print(f"Stigende for index: {index}")
+    elif diffs[index] < 0:
+        print(f"Synkende for index: {index}")
+    else:
+        print(f"Uforandret for index: {index}")
+
 #Oppgave m) Bruk funksjonen fra oppgave f) på den oppgitte lista «døgn-nedbør» for å finne den lengste perioden uten nedbør
 print(f"Den lengste perioden uten nedbør varte i {lengdeLengsteSekvens(dogn_nedbor)} dager")
 
@@ -93,6 +110,9 @@ for index in range(len(temperaturer)):
     temperaturer_tidspunkter.append(index)
     
 i(temperaturer)
+
+diffs = beregne_differanser(temperaturer)
+print(diffs)
 
 liste_grader = temperaturer
 Resultat_over_5 = sum_over_5(liste_grader)
