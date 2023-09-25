@@ -71,3 +71,26 @@ for index in range(len(temperaturer)):
     temperaturer_tidspunkter.append(index)
     
 i(temperaturer)
+
+
+
+# e)
+def beregne_differanser(liste):
+    differanser = []
+    for i in range(1,len(liste)):
+        diff = liste[i]-liste[i-1]
+        differanser.append(diff)
+    return differanser
+
+
+diffs = beregne_differanser(temperaturer)
+print(diffs)
+
+#j)
+for index in range(len(diffs)):
+    if diffs[index] > 0:
+        print(f"Stigende for index: {index}")
+    elif diffs[index] < 0:
+        print(f"Synkende for index: {index}")
+    else:
+        print(f"Uforandret for index: {index}")
