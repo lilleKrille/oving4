@@ -63,17 +63,6 @@ def lengdeLengsteSekvens(aListe, aVerdi = 0):
             sekvens = 0
     return lengsteSekvens
 
-#Oppgave m) Bruk funksjonen fra oppgave f) på den oppgitte lista «døgn-nedbør» for å finne den lengste perioden uten nedbør
-print(f"Den lengste perioden uten nedbør varte i {lengdeLengsteSekvens(dogn_nedbor)} dager")
-
-temperaturer_tidspunkter = list()
-for index in range(len(temperaturer)):
-    temperaturer_tidspunkter.append(index)
-    
-i(temperaturer)
-
-
-
 # e)
 def beregne_differanser(liste):
     differanser = []
@@ -81,10 +70,6 @@ def beregne_differanser(liste):
         diff = liste[i]-liste[i-1]
         differanser.append(diff)
     return differanser
-
-
-diffs = beregne_differanser(temperaturer)
-print(diffs)
 
 #j)
 for index in range(len(diffs)):
@@ -94,3 +79,15 @@ for index in range(len(diffs)):
         print(f"Synkende for index: {index}")
     else:
         print(f"Uforandret for index: {index}")
+
+#Oppgave m) Bruk funksjonen fra oppgave f) på den oppgitte lista «døgn-nedbør» for å finne den lengste perioden uten nedbør
+print(f"Den lengste perioden uten nedbør varte i {lengdeLengsteSekvens(dogn_nedbor)} dager")
+
+temperaturer_tidspunkter = list()
+for index in range(len(temperaturer)):
+    temperaturer_tidspunkter.append(index)
+    
+i(temperaturer)
+
+diffs = beregne_differanser(temperaturer)
+print(diffs)
