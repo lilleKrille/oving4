@@ -115,3 +115,43 @@ print("Dersom vekst er gitt i cm tilsvarere dette: ", Resultat_over_5,"cm")
 print(f"Den lengste perioden uten nedbør varte i {lengdeLengsteSekvens(dogn_nedbor)} dager")
 
 
+
+#Øving 10
+
+#Henter data fra valgfri fil
+def lesFraFil(aFilnavn):            
+    
+    navn = list()
+    stasjon = list()
+    dato = list()
+    snodybde = list()
+    nedbor = list()
+    middeltemperatur = list()
+    snittSkydekke = list()
+    middelvind = list()
+
+    with open(aFilnavn, "r") as file:
+        file.readline()                     #Skipper første linje
+        for line in file:
+            lineData = line.split(";")
+
+            navn.append(lineData[0])
+            stasjon.append(lineData[1])
+            dato.append(lineData[2])
+            snodybde.append(lineData[3])
+            nedbor.append(lineData[4])
+            middeltemperatur.append(lineData[5])
+            snittSkydekke.append(lineData[6])
+            middelvind.append(lineData[7].strip("\n"))
+            
+    data = dict()
+    data["navn"] = navn
+    data["stasjon"] = stasjon
+    data["dato"] = dato
+    data["snodybde"] = snodybde
+    data["nedbor"] = nedbor
+    data["middeltemperatur"] = middeltemperatur
+    data["snittSkydekke"] = snittSkydekke
+    data["middelvind"] = middelvind
+
+    return data
