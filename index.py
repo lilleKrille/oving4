@@ -131,8 +131,10 @@ def lesFraFil(aFilnavn):
     middelvind = list()
 
     with open(aFilnavn, "r") as file:
-        file.readline()                     #Skipper første linje
-        for line in file:
+        lines = file.readlines()
+        lines = lines[1:-1]                 #Skipper første og siste linje 
+
+        for line in lines:
             lineData = line.split(";")
 
             navn.append(lineData[0])
