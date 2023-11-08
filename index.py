@@ -69,7 +69,7 @@ def sum_over_5 (liste_grader): #Funksjon som finner ut om temperaturene i listen
     for temp in liste_grader:
         if temp > 5:
             sum += temp - 5
-        elif temp < 0: #tar skade ved nagive grader
+        elif temp < 0: #tar skade ved negative grader
             sum += temp     
     return sum
   
@@ -97,3 +97,4 @@ i(temperaturer)
 liste_grader = temperaturer
 Resultat_over_5 = sum_over_5(liste_grader)
 print("Dersom vekst er gitt i cm tilsvarere dette: ", Resultat_over_5,"cm")
+
