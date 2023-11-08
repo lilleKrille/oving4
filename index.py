@@ -1,3 +1,4 @@
+from datetime import datetime
 
 # e og j- Anders
 def beregne_differanser(liste):
@@ -118,7 +119,7 @@ print(f"Den lengste perioden uten nedbør varte i {lengdeLengsteSekvens(dogn_ned
 
 #Øving 10
 
-#Henter data fra valgfri fil
+#Oppgave a, Henter data fra valgfri fil
 def lesFraFil(aFilnavn):            
     
     navn = list()
@@ -139,7 +140,12 @@ def lesFraFil(aFilnavn):
 
             navn.append(lineData[0])
             stasjon.append(lineData[1])
-            dato.append(lineData[2])
+
+            datoString = lineData[2]
+            datoObjekt = datetime.strptime(datoString, "%d.%m.%Y")
+            datoObjekt = datoObjekt.date()
+            dato.append(datoObjekt)
+
             snodybde.append(lineData[3])
             nedbor.append(lineData[4])
             middeltemperatur.append(lineData[5])
@@ -157,3 +163,41 @@ def lesFraFil(aFilnavn):
     data["middelvind"] = middelvind
 
     return data
+
+#Oppgave b, går gjennom datoer med data for snødybde og returnerer lister for hvert år med antall skiføredager
+def skiforeDager(aDatoListe, aSnodybdeListe):
+    skisesonger = dict()
+    sesongString = list()
+    hasCleared = False
+    
+    if(aDatoListe[0].month < 10):
+        year = aDatoListe[0].year - 1
+    else:
+        year = aDatoListe[0].year
+    
+    for i, dato in enumerate(aDatoListe):
+        if (dato.year == year and dato.month >= 10) or (dato.year == year + 1 and dato.month < 6):
+            if hasCleared: 
+                hasCleared = False
+
+            sesongString.append(aSnodybdeListe[i])
+        else:
+            if not hasCleared:
+                sesong = list()
+                
+                for i in sesongString:
+                    try:
+                        sesong.append(float(i))
+                    except ValueError:
+                        pass
+            
+                if not len(sesong) == 0:
+                    skisesonger[year] = antallElementerStorreEllerLik(sesong, 20)
+                
+                sesong.clear()
+                sesongString.clear()
+                hasCleared = True
+                year += 1
+                
+
+    return skisesonger
