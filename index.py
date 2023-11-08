@@ -1,4 +1,5 @@
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 # e og j- Anders
 def beregne_differanser(liste):
@@ -201,3 +202,27 @@ def skiforeDager(aDatoListe, aSnodybdeListe):
                 
 
     return skisesonger
+
+#oppgåve d) 
+#graferSkiføre(x,y) - plottar trend og faktisk skiføre kvart år 
+#Parameter:
+#   [list] x = år
+#   [list] y = dagar med skiføre
+#ingen returverdi
+def graferSkiføre(x,y):
+    trend = g(x,y) #oppgåve c), returnerer ei liste med stigningstal og konstantledd for trenden
+    trendGraf = []
+    trendGraf.append(f(trend[0], trend[1], 0))
+    trendGraf.append(f(trend[0], trend[1], ))
+    xi = len(x)
+    plt.plot(x,y, label="Dagar med skiføre kvart år")
+    plt.plot([0, xi], trendGraf, label="Trend")
+    plt.show()
+
+#lineær funkjon
+def f(a,b,x): return a*x+b 
+
+##utføring av kode
+datasett = lesFraFil("snoedybder_vaer_en_stasjon_dogn.csv")
+#oppgåve c)
+#x = år, y = antall dager med skiføre
