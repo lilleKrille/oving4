@@ -198,8 +198,7 @@ def skiforeDager(aDatoListe, aSnodybdeListe):
                 sesong.clear()
                 sesongString.clear()
                 hasCleared = True
-                year += 1
-                
+                year += 1 
 
     return skisesonger
 
