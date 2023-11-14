@@ -54,9 +54,11 @@ def plot_penvaersdager(datasett):
         try:
             if obj[1].year in data:
                 if float(obj[0]) <= 3:
+                    # skyfri dag på datoen økes med 1
                     data[obj[1].year] = data[obj[1].year] + 1
             else:
                 if float(obj[0]) <= 3:
+                    # Første gang skyfri dag, sett antall til 1
                     data[obj[1].year] = 1
         except ValueError: 
             continue
@@ -65,21 +67,14 @@ def plot_penvaersdager(datasett):
     plt.show()
 
 
+# fra øving 4
 def beregne_differanser(liste):
     differanser = []
     for i in range(1,len(liste)):
         diff = liste[i]-liste[i-1]
         differanser.append(diff)
     return differanser
-{ 
- "07/2020": [2,3,4,4,5,2,8],
- "2021": [3,2,5,6,4],
- "2022": 2,
- "2023": 1,
- "1980": 0,
- }
-[2020, 2021, 2022, 2023, 1980]
-[2,3,2,1,0]
+
 
 def plot_temp_per_mnd(datasett):
     result = dict()
@@ -106,8 +101,6 @@ def plot_temp_per_mnd(datasett):
     plt.plot(list(result_avg.keys())[1:],result_diff, "o-", label="gjennomsnitt temperatur")
     plt.legend()
     plt.show()
-
-
 
 
 if __name__ == "__main__":
