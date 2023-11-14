@@ -198,8 +198,7 @@ def skiforeDager(aDatoListe, aSnodybdeListe):
                 sesong.clear()
                 sesongString.clear()
                 hasCleared = True
-                year += 1
-                
+                year += 1 
 
     return skisesonger
 
@@ -226,3 +225,36 @@ def f(a,b,x): return a*x+b
 datasett = lesFraFil("snoedybder_vaer_en_stasjon_dogn.csv")
 #oppgåve c)
 #x = år, y = antall dager med skiføre
+
+#Oppgave f, finner lengste sammenhengende periode med tørke per år og plotter det
+def lengsteTorkePeriodePerAr(aDatoListe, aNedborListe):
+    years = dict()
+    yearString = list()
+    year = list()
+    currentYear = aDatoListe[0].year
+    #print(year)
+
+    for i, dato in enumerate(aDatoListe):
+        if not dato.year == currentYear:
+            for c in yearString:
+                try:
+                    c = c.replace(",", ".")
+                    year.append(float(c))
+                except ValueError:
+                    pass
+            
+            if len(year) >= 300:
+                lengsteTorkePeriode = lengdeLengsteSekvens(year)
+                years[currentYear] = lengsteTorkePeriode
+
+            year.clear()
+            yearString.clear()
+            currentYear += 1
+
+        if dato.year == currentYear:
+            yearString.append(aNedborListe[i])
+
+    plt.plot(years.keys(), years.values(), marker = "o")
+    plt.xlabel("Årstall")
+    plt.ylabel("Lengste sekvens med tørkedager")
+    plt.show()
