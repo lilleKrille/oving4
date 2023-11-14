@@ -52,7 +52,10 @@ def lesFraFil(aFilnavn):
     data["snittSkydekke"] = snittSkydekke
     data["middelvind"] = middelvind
 
-    # til oppgave g og i
+    # til oppgave g og i (legger til duplikat for å slippe å løse merge conflict problemer)
+    # Egentlig burde oppgave (a) vært gjort i fellesskap, eller med nøyere diskusjon om hvordan oppsettet burde vært, 
+    # slikt at de andre oppgavene er mulige å løse
+    
     data["snittSkydekke_med_dato"] = snittSkydekke_med_dato
     data["middeltemperatur_med_dato"] = middeltemperatur_med_dato
 
