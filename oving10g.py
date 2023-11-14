@@ -47,6 +47,9 @@ def lesFraFil(aFilnavn):
 
 
 def plot_penvaersdager(datasett):
+    # for at funksjonene skal fungere, må oppgave (a) endres:
+    # middeltemperatur.append((lineData[5].replace(",", "."), datoObjekt)) # legg til dato i dict, og erstatt , med .
+    # snittSkydekke.append((lineData[6].replace(",", "."),datoObjekt )) # legg til dato i dict, og erstatt , med .    
     data = dict()
     #obj is (VALUE, DATE)         obj[0] = VALUE, obj[1] = DATE
     print(datasett)
