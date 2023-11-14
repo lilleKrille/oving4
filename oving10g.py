@@ -52,7 +52,6 @@ def plot_penvaersdager(datasett):
     # snittSkydekke.append((lineData[6].replace(",", "."),datoObjekt )) # legg til dato i dict, og erstatt , med .    
     data = dict()
     #obj is (VALUE, DATE)         obj[0] = VALUE, obj[1] = DATE
-    print(datasett)
     for obj in datasett:
         try:
             if obj[1].year in data:
