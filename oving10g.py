@@ -12,6 +12,10 @@ def lesFraFil(aFilnavn):
     snittSkydekke = list()
     middelvind = list()
 
+    #til g og i
+    middeltemperatur_med_dato = list()
+    snittSkydekke_med_dato = list()
+
     with open(aFilnavn, "r") as file:
         lines = file.readlines()
         lines = lines[1:-1]                 #Skipper første og siste linje 
@@ -29,8 +33,13 @@ def lesFraFil(aFilnavn):
 
             snodybde.append(lineData[3])
             nedbor.append(lineData[4])
-            middeltemperatur.append((lineData[5].replace(",", "."), datoObjekt)) # legg til dato i dict, og erstatt , med .
-            snittSkydekke.append((lineData[6].replace(",", "."),datoObjekt )) # legg til dato i dict, og erstatt , med .
+
+            # til oppgave g og i
+            middeltemperatur_med_dato.append((lineData[5].replace(",", "."), datoObjekt)) # legg til dato i dict, og erstatt , med .
+            snittSkydekke_med_dato.append((lineData[6].replace(",", "."),datoObjekt )) # legg til dato i dict, og erstatt , med .
+
+            middeltemperatur.append(lineData[5])
+            snittSkydekke.append(lineData[6]) 
             middelvind.append(lineData[7].strip("\n"))
 
     data = dict()
@@ -43,9 +52,13 @@ def lesFraFil(aFilnavn):
     data["snittSkydekke"] = snittSkydekke
     data["middelvind"] = middelvind
 
+    # til oppgave g og i
+    data["snittSkydekke_med_dato"] = snittSkydekke_med_dato
+    data["middeltemperatur_med_dato"] = middeltemperatur_med_dato
+
     return data
 
-
+# oppgave g
 def plot_penvaersdager(datasett):
     # for at funksjonene skal fungere, må oppgave (a) endres:
     # middeltemperatur.append((lineData[5].replace(",", "."), datoObjekt)) # legg til dato i dict, og erstatt , med .
@@ -77,7 +90,7 @@ def beregne_differanser(liste):
         differanser.append(diff)
     return differanser
 
-
+# oppgave i
 def plot_temp_per_mnd(datasett):
     result = dict()
     for data in datasett:
@@ -107,5 +120,5 @@ def plot_temp_per_mnd(datasett):
 
 if __name__ == "__main__":
     datasett = lesFraFil("snoedybder_vaer_en_stasjon_dogn.csv")
-    plot_penvaersdager(datasett["snittSkydekke"])
-    plot_temp_per_mnd(datasett["middeltemperatur"])
+    plot_penvaersdager(datasett["snittSkydekke_med_dato"])
+    plot_temp_per_mnd(datasett["middeltemperatur_med_dato"])
