@@ -51,12 +51,12 @@ def g(x,y):
         teller += (x[i]-snittX)*(y[i]-snittY)
         nevner += (x[i]-snittX)**2
     a = teller/nevner
-#    b = snittY - a*snittX
-    return a#, b
+    b = snittY - a*snittX
+    return a, b
 
 #Sjekkar om ein trend.
 def k(x,y):
-    a = g(x,y)
+    a = g(x,y)[0]
     if a < 0:   print("trenden er negativ")
     elif a > 0: print("trenden er positiv")
     else:       print("ingen trend")
@@ -208,14 +208,18 @@ def skiforeDager(aDatoListe, aSnodybdeListe):
 #   [list] x = år
 #   [list] y = dagar med skiføre
 #ingen returverdi
-def graferSkiføre(x,y):
+def graferSkifore(skiforeDict):
+    x = [*skiforeDict]
+    y = [*skiforeDict.values()]
+    startAar = x[0]
+    sluttAar = x[-1]
     trend = g(x,y) #oppgåve c), returnerer ei liste med stigningstal og konstantledd for trenden
     trendGraf = []
-    trendGraf.append(f(trend[0], trend[1], 0))
-    trendGraf.append(f(trend[0], trend[1], ))
-    xi = len(x)
+    print(f"startÅr, sluttår: {startAar}, {sluttAar}")
+    trendGraf.append(f(trend[0], trend[1], startAar)) #a,b,x
+    trendGraf.append(f(trend[0], trend[1], len(x)))
     plt.plot(x,y, label="Dagar med skiføre kvart år")
-    plt.plot([0, xi], trendGraf, label="Trend")
+    plt.plot([startAar, sluttAar], trendGraf, label="Trend")
     plt.show()
 
 #lineær funkjon
@@ -223,8 +227,9 @@ def f(a,b,x): return a*x+b
 
 ##utføring av kode
 datasett = lesFraFil("snoedybder_vaer_en_stasjon_dogn.csv")
-#oppgåve c)
-#x = år, y = antall dager med skiføre
+objektForSkifore = skiforeDager(datasett["dato"], datasett["snodybde"])
+#oppgåve d)
+graferSkifore(objektForSkifore)
 
 #Oppgave f, finner lengste sammenhengende periode med tørke per år og plotter det
 def lengsteTorkePeriodePerAr(aDatoListe, aNedborListe):
