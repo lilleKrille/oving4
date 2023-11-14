@@ -100,7 +100,7 @@ def plot_temp_per_mnd(datasett):
 
     # PLOT:
     plt.plot(list(result_avg.keys()),list(result_avg.values()), "o-", label="gjennomsnitt temperatur")
-    plt.plot(list(result_avg.keys())[1:],result_diff, "o-", label="gjennomsnitt temperatur")
+    plt.plot(list(result_avg.keys())[1:],result_diff, "o-", label="gjennomsnitt differanse på temperatur")
     plt.legend()
     plt.show()
 
