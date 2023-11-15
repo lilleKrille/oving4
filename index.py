@@ -121,8 +121,7 @@ print(f"Den lengste perioden uten nedbør varte i {lengdeLengsteSekvens(dogn_ned
 #Øving 10
 
 #Oppgave a, Henter data fra valgfri fil
-def lesFraFil(aFilnavn):            
-    
+def lesFraFil(aFilnavn):
     navn = list()
     stasjon = list()
     dato = list()
@@ -150,7 +149,7 @@ def lesFraFil(aFilnavn):
             snodybde.append(lineData[3])
             nedbor.append(lineData[4])
             middeltemperatur.append(lineData[5])
-            snittSkydekke.append(lineData[6])
+            snittSkydekke.append((lineData[6].replace(",", "."),datoObjekt ))
             middelvind.append(lineData[7].strip("\n"))
             
     data = dict()
@@ -214,9 +213,12 @@ def graferSkifore(skiforeDict):
     startAar = x[0]
     sluttAar = x[-1]
     trend = g(x,y) #oppgåve c), returnerer ei liste med stigningstal og konstantledd for trenden
+
     print(f"Trenden er {trend[0]}x + {trend[1]}")
     trendGraf = []
     trendGraf.append(f(trend[0], trend[1], 0)) #a,b,x
+    print(f"startÅr, sluttår: {startAar}, {sluttAar}")
+
     trendGraf.append(f(trend[0], trend[1], len(x)))
     plt.plot(x,y, label="Dagar med skiføre kvart år")
     plt.plot([startAar, sluttAar], trendGraf, label="Trend")
