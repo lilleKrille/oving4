@@ -213,9 +213,12 @@ def graferSkifore(skiforeDict):
     startAar = x[0]
     sluttAar = x[-1]
     trend = g(x,y) #oppgåve c), returnerer ei liste med stigningstal og konstantledd for trenden
+
+    print(f"Trenden er {trend[0]}x + {trend[1]}")
     trendGraf = []
+    trendGraf.append(f(trend[0], trend[1], 0)) #a,b,x
     print(f"startÅr, sluttår: {startAar}, {sluttAar}")
-    trendGraf.append(f(trend[0], trend[1], startAar)) #a,b,x
+
     trendGraf.append(f(trend[0], trend[1], len(x)))
     plt.plot(x,y, label="Dagar med skiføre kvart år")
     plt.plot([startAar, sluttAar], trendGraf, label="Trend")
@@ -262,3 +265,131 @@ def lengsteTorkePeriodePerAr(aDatoListe, aNedborListe):
     plt.xlabel("Årstall")
     plt.ylabel("Lengste sekvens med tørkedager")
     plt.show()
+
+    def sum_over_5(temperaturdata):
+    summen = 0
+    for temp in temperaturdata:
+        if temp > 5:
+            summen += temp - 5
+    return summen
+
+def beregn_gyldighet_og_årsvekst(årsdict):
+    gyldige_år_liste_e = []
+    vekst_resultater = []
+    for år, temperaturdata in årsdict.items():
+        # Filtrer ut ugyldige år
+        if len(temperaturdata) >= 300:
+            vekst = sum_over_5(temperaturdata)
+            vekst_resultater.append((år, vekst))
+            gyldige_år_liste_e.append(år)
+    print(vekst_resultater)
+    #print(temperaturdata)
+    #print(årsdict.items())
+
+
+    # Plot resultatene
+    år, vekst = zip(*vekst_resultater)
+    plt.bar(år, vekst)
+    plt.xlabel('År')
+    plt.ylabel('Vekst over 5 grader')
+    plt.title('Vekst for den tenkte planten hvert år')
+    plt.show()
+
+    return gyldige_år_liste_e
+
+def main_e():
+    årsdict = dict()
+
+    with open("/Users/tord/Documents/UiS/AutBac. 1st semester/Dat 120/Øvinger Dat120/Øving : ukes oppg (10) GrProsjekt2/ren_info_fra_snoedybder.txt", "r", encoding="UTF8") as hentet_data:
+        for linje in hentet_data:
+            data = linje.split(";")
+            år = datetime.strptime(data[2], "%d.%m.%Y").year
+            try:
+                temp = float(data[5].replace(',', '.'))  # Erstatt komma med punkt
+            except ValueError: #Fjerner "-" ved å sette dem lik -777, slik påvirker de ikke plantevekst
+                    temp == ("Ikke gyldig måling")
+
+            if år not in årsdict:
+                årsdict[år] = [temp]
+            else:
+                årsdict[år].append(temp)
+        #print(årsdict) #Viser dictionaryen som lages med år som 
+
+    gyldige_år_liste = beregn_gyldighet_og_årsvekst(årsdict)
+
+    print("Gyldige år med mer enn 300 dager temperaturdata:", gyldige_år_liste)
+
+
+def beregn_gyldige_år(årsdict_h):
+    gyldige_år_liste_h = []
+    for år, middelvinddata in årsdict_h.items():
+        if len(middelvinddata) >= 300:
+            gyldige_år_liste_h.append(år)
+    return gyldige_år_liste_h
+
+def middelvind_og_median(årsdict_h, gyldige_år_liste_h):
+    maks_middelvind_liste = []
+    median_middelvind_liste = []
+
+    for gyldig_år in gyldige_år_liste_h:
+        if gyldig_år in årsdict_h.keys():
+            vindmåling_gyldig_år = årsdict_h[gyldig_år]
+
+            # Fjern ugyldige målinger før beregninger
+            gyldige_målinger = [måling for måling in vindmåling_gyldig_år if isinstance(måling, float)]
+
+            maks = max(gyldige_målinger)
+            sortert_vindmåling = sorted(gyldige_målinger)
+            midten = int(len(sortert_vindmåling) / 2)
+            median = gyldige_målinger[midten]
+
+            maks_middelvind_liste.append(maks)
+            median_middelvind_liste.append(median)
+
+            #print(f"\n{gyldig_år}:")
+            #print(f"Maks middelvind:\t{maks}")
+            #print(f"Medianen middelvind:\t {median}")
+
+    plotting_av_vind(gyldige_år_liste_h, maks_middelvind_liste, median_middelvind_liste)
+
+def plotting_av_vind(år_liste, maks_liste, median_liste):
+    fig, ax = plt.subplots()
+    bredde = 0.35
+    år_bredde = range(len(år_liste))
+
+    søyle_maks = ax.bar([x - bredde / 2 for x in år_bredde], maks_liste, bredde, label='Maks Middelvind')
+    søyle_median = ax.bar([x + bredde / 2 for x in år_bredde], median_liste, bredde, label='Median Middelvind')
+
+    ax.set_ylabel('Vindhastighet (m/s)')
+    ax.set_title('Maks og Median Middelvind for Gyldige År')
+    ax.set_xticks(år_bredde)
+    ax.set_xticklabels(år_liste, rotation=45, ha="right",fontsize=6)  # Justering for bedre lesbarhet
+    ax.legend()
+
+    plt.show()
+
+def main_h():
+    årsdict_h = dict()
+
+    with open("/Users/tord/Documents/UiS/AutBac. 1st semester/Dat 120/Øvinger Dat120/Øving : ukes oppg (10) GrProsjekt2/ren_info_fra_snoedybder.txt", "r", encoding="UTF8") as hentet_data:
+        for linje in hentet_data:
+            data = linje.split(";")
+            år = datetime.strptime(data[2], "%d.%m.%Y").year
+            try:
+                middelvind = float(data[7].replace(',', '.'))
+            except ValueError:
+                middelvind = "Ikke gyldig måling"
+
+            if år not in årsdict_h:
+                årsdict_h[år] = [middelvind]
+            else:
+                årsdict_h[år].append(middelvind)
+
+    gyldige_år_liste_h = beregn_gyldige_år(årsdict_h)
+    #print("Gyldige år med mer enn 300 dager middelvind-data:", gyldige_år_liste_h)
+
+    middelvind_og_median(årsdict_h, gyldige_år_liste_h)
+
+if __name__ == "__main__":
+    main_e()
+    main_h()
