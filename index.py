@@ -121,8 +121,7 @@ print(f"Den lengste perioden uten nedbør varte i {lengdeLengsteSekvens(dogn_ned
 #Øving 10
 
 #Oppgave a, Henter data fra valgfri fil
-def lesFraFil(aFilnavn):            
-    
+def lesFraFil(aFilnavn):
     navn = list()
     stasjon = list()
     dato = list()
@@ -150,7 +149,7 @@ def lesFraFil(aFilnavn):
             snodybde.append(lineData[3])
             nedbor.append(lineData[4])
             middeltemperatur.append(lineData[5])
-            snittSkydekke.append(lineData[6])
+            snittSkydekke.append((lineData[6].replace(",", "."),datoObjekt ))
             middelvind.append(lineData[7].strip("\n"))
             
     data = dict()
