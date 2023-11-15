@@ -214,9 +214,9 @@ def graferSkifore(skiforeDict):
     startAar = x[0]
     sluttAar = x[-1]
     trend = g(x,y) #oppgåve c), returnerer ei liste med stigningstal og konstantledd for trenden
+    print(f"Trenden er {trend[0]}x + {trend[1]}")
     trendGraf = []
-    print(f"startÅr, sluttår: {startAar}, {sluttAar}")
-    trendGraf.append(f(trend[0], trend[1], startAar)) #a,b,x
+    trendGraf.append(f(trend[0], trend[1], 0)) #a,b,x
     trendGraf.append(f(trend[0], trend[1], len(x)))
     plt.plot(x,y, label="Dagar med skiføre kvart år")
     plt.plot([startAar, sluttAar], trendGraf, label="Trend")
