@@ -85,8 +85,8 @@ def sum_over_5 (liste_grader): #Funksjon som finner ut om temperaturene i listen
     for temp in liste_grader:
         if temp > 5:
             sum += temp - 5
-        elif temp < 0: #tar skade ved nagive grader
-            sum += temp     
+#        elif temp < 0: #tar skade ved nagive grader
+#           sum += temp     
     return sum
 
 #Listene som ble oppgitt i oppgaven
@@ -131,6 +131,10 @@ def lesFraFil(aFilnavn):
     snittSkydekke = list()
     middelvind = list()
 
+    #til g og i
+    middeltemperatur_med_dato = list()
+    snittSkydekke_med_dato = list()
+
     with open(aFilnavn, "r") as file:
         lines = file.readlines()
         lines = lines[1:-1]                 #Skipper første og siste linje 
@@ -148,10 +152,15 @@ def lesFraFil(aFilnavn):
 
             snodybde.append(lineData[3])
             nedbor.append(lineData[4])
+
+            # til oppgave g og i
+            middeltemperatur_med_dato.append((lineData[5].replace(",", "."), datoObjekt)) # legg til dato i dict, og erstatt , med .
+            snittSkydekke_med_dato.append((lineData[6].replace(",", "."),datoObjekt )) # legg til dato i dict, og erstatt , med .
+
             middeltemperatur.append(lineData[5])
-            snittSkydekke.append((lineData[6].replace(",", "."),datoObjekt ))
+            snittSkydekke.append(lineData[6]) 
             middelvind.append(lineData[7].strip("\n"))
-            
+
     data = dict()
     data["navn"] = navn
     data["stasjon"] = stasjon
@@ -162,10 +171,17 @@ def lesFraFil(aFilnavn):
     data["snittSkydekke"] = snittSkydekke
     data["middelvind"] = middelvind
 
+    # til oppgave g og i (legger til duplikat for å slippe å løse merge conflict problemer)
+    # Egentlig burde oppgave (a) vært gjort i fellesskap, eller med nøyere diskusjon om hvordan oppsettet burde vært, 
+    # slikt at de andre oppgavene er mulige å løse
+    
+    data["snittSkydekke_med_dato"] = snittSkydekke_med_dato
+    data["middeltemperatur_med_dato"] = middeltemperatur_med_dato
+
     return data
 
 #Oppgave b, går gjennom datoer med data for snødybde og returnerer lister for hvert år med antall skiføredager
-def skiforeDager(aDatoListe, aSnodybdeListe):
+def skiforeDager(aDatoListe, aSnodybdeListe, dybde):
     skisesonger = dict()
     sesongString = list()
     hasCleared = False
@@ -192,7 +208,7 @@ def skiforeDager(aDatoListe, aSnodybdeListe):
                         pass
             
                 if not len(sesong) == 0:
-                    skisesonger[year] = antallElementerStorreEllerLik(sesong, 20)
+                    skisesonger[year] = antallElementerStorreEllerLik(sesong, dybde)
                 
                 sesong.clear()
                 sesongString.clear()
@@ -210,28 +226,40 @@ def skiforeDager(aDatoListe, aSnodybdeListe):
 def graferSkifore(skiforeDict):
     x = [*skiforeDict]
     y = [*skiforeDict.values()]
+    dagerMedData = skiforeDager(datasett["dato"], datasett["snodybde"], 0)
+    nokDager = over200dager([*dagerMedData], [*dagerMedData.values()])
+    nyX = []
+    nyY = []
+    for i in range(len(x)):
+        if nokDager[i]:
+            nyX.append(x[i])
+            nyY.append(y[i])
     startAar = x[0]
     sluttAar = x[-1]
-    trend = g(x,y) #oppgåve c), returnerer ei liste med stigningstal og konstantledd for trenden
-
-    print(f"Trenden er {trend[0]}x + {trend[1]}")
+    trend = g(nyX,nyY) #oppgåve c), returnerer ei liste med stigningstal og konstantledd for trenden
+    print(f"Stigningstal: {trend[0]}, konstantledd: {trend[1]}")
     trendGraf = []
-    trendGraf.append(f(trend[0], trend[1], 0)) #a,b,x
     print(f"startÅr, sluttår: {startAar}, {sluttAar}")
-
-    trendGraf.append(f(trend[0], trend[1], len(x)))
-    plt.plot(x,y, label="Dagar med skiføre kvart år")
-    plt.plot([startAar, sluttAar], trendGraf, label="Trend")
+    trendGraf.append(f(trend[0], trend[1], startAar)) #a,b,x
+    trendGraf.append(f(trend[0], trend[1], sluttAar))
+    plt.plot(nyX,nyY,"o-", label="Dagar med skiføre kvart år")
+    plt.plot([startAar, sluttAar], trendGraf, "o-", label="Trend")
     plt.show()
 
 #lineær funkjon
 def f(a,b,x): return a*x+b 
 
-##utføring av kode
-datasett = lesFraFil("snoedybder_vaer_en_stasjon_dogn.csv")
-objektForSkifore = skiforeDager(datasett["dato"], datasett["snodybde"])
-#oppgåve d)
-graferSkifore(objektForSkifore)
+def over200dager(x,y):
+    erOver200 = []
+    for i in range(len(x)):
+        if y[i] >= 200:
+            erOver200.append(True)
+        else: 
+            erOver200.append(False)
+    return erOver200
+
+
+
 
 #Oppgave f, finner lengste sammenhengende periode med tørke per år og plotter det
 def lengsteTorkePeriodePerAr(aDatoListe, aNedborListe):
@@ -267,11 +295,11 @@ def lengsteTorkePeriodePerAr(aDatoListe, aNedborListe):
     plt.show()
 
     def sum_over_5(temperaturdata):
-    summen = 0
-    for temp in temperaturdata:
-        if temp > 5:
-            summen += temp - 5
-    return summen
+        summen = 0
+        for temp in temperaturdata:
+            if temp > 5:
+                summen += temp - 5
+        return summen
 
 def beregn_gyldighet_og_årsvekst(årsdict):
     gyldige_år_liste_e = []
@@ -285,8 +313,6 @@ def beregn_gyldighet_og_årsvekst(årsdict):
     print(vekst_resultater)
     #print(temperaturdata)
     #print(årsdict.items())
-
-
     # Plot resultatene
     år, vekst = zip(*vekst_resultater)
     plt.bar(år, vekst)
@@ -300,7 +326,7 @@ def beregn_gyldighet_og_årsvekst(årsdict):
 def main_e():
     årsdict = dict()
 
-    with open("/Users/tord/Documents/UiS/AutBac. 1st semester/Dat 120/Øvinger Dat120/Øving : ukes oppg (10) GrProsjekt2/ren_info_fra_snoedybder.txt", "r", encoding="UTF8") as hentet_data:
+    with open("ren_info_fra_snoedybder.txt", "r", encoding="UTF8") as hentet_data:
         for linje in hentet_data:
             data = linje.split(";")
             år = datetime.strptime(data[2], "%d.%m.%Y").year
@@ -371,7 +397,7 @@ def plotting_av_vind(år_liste, maks_liste, median_liste):
 def main_h():
     årsdict_h = dict()
 
-    with open("/Users/tord/Documents/UiS/AutBac. 1st semester/Dat 120/Øvinger Dat120/Øving : ukes oppg (10) GrProsjekt2/ren_info_fra_snoedybder.txt", "r", encoding="UTF8") as hentet_data:
+    with open("ren_info_fra_snoedybder.txt", "r", encoding="UTF8") as hentet_data:
         for linje in hentet_data:
             data = linje.split(";")
             år = datetime.strptime(data[2], "%d.%m.%Y").year
@@ -390,6 +416,21 @@ def main_h():
 
     middelvind_og_median(årsdict_h, gyldige_år_liste_h)
 
+    ##utføring av kode
 if __name__ == "__main__":
+    import oving10g
+    
+    #oppgåve d) Kristoffer
+    datasett = lesFraFil("snoedybder_vaer_en_stasjon_dogn.csv")
+    objektForSkifore = skiforeDager(datasett["dato"], datasett["snodybde"], 20)
+    graferSkifore(objektForSkifore)
+    
+    #Tord
     main_e()
     main_h()
+    
+    #ANDERS
+    #oppgåve g
+    oving10g.plot_penvaersdager(datasett["snittSkydekke_med_dato"])
+    #oppgåve i
+    oving10g.plot_temp_per_mnd(datasett["middeltemperatur_med_dato"])
